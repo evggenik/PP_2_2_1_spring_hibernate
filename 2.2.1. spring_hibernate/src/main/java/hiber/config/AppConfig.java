@@ -36,10 +36,10 @@ public class AppConfig {
       return dataSource;
    }
 
-   @Bean
+   @Bean("sessionFactory")
    public LocalSessionFactoryBean getSessionFactory() {
       LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
-      factoryBean.setDataSource(getDataSource());
+      factoryBean.setDataSource(getDataSource()); // injected dataSource via setter
       
       Properties props=new Properties();
       props.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
@@ -51,10 +51,10 @@ public class AppConfig {
       return factoryBean;
    }
 
-   @Bean
+   @Bean("transactionManager")
    public HibernateTransactionManager getTransactionManager() {
       HibernateTransactionManager transactionManager = new HibernateTransactionManager();
-      transactionManager.setSessionFactory(getSessionFactory().getObject());
+      transactionManager.setSessionFactory(getSessionFactory().getObject()); //injected SessionFactory
       return transactionManager;
    }
 }
